@@ -1,6 +1,6 @@
 package com.company;
 
-public class Truck extends Car {
+public class Truck extends Car implements Drivable, saleable {
     Double capacityInTones;
     Double actualCargoWeight;
     Double drivingTimeInHours;
@@ -11,6 +11,8 @@ public class Truck extends Car {
         this.actualCargoWeight = 0.0;
         this.drivingTimeInHours = 0.0;
     }
+
+
 
     public void loadTruck(Double cargoWeight) {
         if (actualCargoWeight + cargoWeight > capacityInTones) {
@@ -48,5 +50,27 @@ public class Truck extends Car {
         this.drivingTimeInHours = 0.0;
     }
 
+    @Override
+    public Double getPrice() {
+        //połączenie do swiatowej giełdy ciezarowek
+        //uwzględnienie stanu ciezarowki
+        return 120687.40;
+    }
+
+    @Override
+    public Human getOwner() {
+        return this.owner;
+    }
+
+    @Override
+    public void sell(Human buyer) throws Exception {
+        if(buyer.cash < this.getPrice()){
+            throw new Exception("nie masz środków");
+        } else {
+            this.owner.cash += this.getPrice();
+            buyer.cash -= this.getPrice();
+            this.owner = buyer;
+        }
+    }
 
 }
